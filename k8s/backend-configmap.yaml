@@ -4,8 +4,8 @@ metadata:
   name: backend-config
   namespace: default
 data:
-  DB_HOST: "postgres"       # Sesuaikan jika pakai RDS
+  DB_HOST: "34.128.93.227"       # IP Publik dari vm-nops-db
   DB_USER: "nops_admin"
   DB_NAME: "nops_db"
-  AI_SERVICE_URL: "http://ai-service:5000/estimate-calorie"
+  AI_SERVICE_URL: "http://34.50.110.108:5000/estimate-calorie" # IP Publik dari vm-nops-ai
   PORT: "8080"

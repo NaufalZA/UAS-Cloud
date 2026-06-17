@@ -2,7 +2,7 @@
 //  NOPSTRACK — App JS
 // ═══════════════════════════════════════════════
 
-const BACKEND_URL = 'http://localhost:8080';
+const BACKEND_URL = 'http://34.50.109.136'; // GKE LoadBalancer IP
 const ANALYZE_URL = `${BACKEND_URL}/api/analyze-food`;
 const HISTORY_URL = `${BACKEND_URL}/api/history`;
 

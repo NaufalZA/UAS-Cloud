@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: nops_admin
+      POSTGRES_PASSWORD: NopsPassword123!
+      POSTGRES_DB: nops_db
+    ports:
+      - "5432:5432" # Diekspos agar Backend di GKE bisa terkoneksi
+    volumes:
+      - nops_pgdata:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  ai-service:
+    build: ./ai-service
+    ports:
+      - "5000:5000" # Diekspos agar Backend di GKE bisa menembak API ini
+    env_file:
+      - .env
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"     # Berjalan di port web standar (HTTP)
+    # Tidak depends_on backend karena backend-nya ada di Kubernetes!
+
+volumes:
+  nops_pgdata:
