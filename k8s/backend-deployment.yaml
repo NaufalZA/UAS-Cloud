@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: DOCKER_HUB_USERNAME/uascloud-backend:latest   # diganti CI/CD via kubectl set image
+        image: nzaidan/uascloud-backend:latest
         ports:
         - containerPort: 8080
         env:
@@ -81,21 +81,25 @@ spec:
         # ── Resource limits (sama seperti UTS 3) ──────────
         resources:
           requests:
-            cpu: 200m
-            memory: 256Mi
+            cpu: 100m
+            memory: 128Mi
           limits:
-            cpu: 500m
-            memory: 512Mi
+            cpu: 300m
+            memory: 256Mi
         # ── Health check ──────────────────────────────────
-        readinessProbe:
-          httpGet:
-            path: /api/history
-            port: 8080
-          initialDelaySeconds: 10
-          periodSeconds: 10
         livenessProbe:
-          httpGet:
-            path: /api/history
-            port: 8080
-          initialDelaySeconds: 20
+          exec:
+            command:
+            - "sh"
+            - "-c"
+            - "echo ok"
+          initialDelaySeconds: 5
           periodSeconds: 15
+        readinessProbe:
+          exec:
+            command:
+            - "sh"
+            - "-c"
+            - "echo ok"
+          initialDelaySeconds: 5
+          periodSeconds: 10

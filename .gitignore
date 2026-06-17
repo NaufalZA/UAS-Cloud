@@ -15,4 +15,8 @@ __pycache__/
 Thumbs.db
 
 # Docker override lokal (prod file tetap di-track)
-docker-compose.override.yaml
+docker-compose.override.yaml
+
+# K8s secret — berisi credential, JANGAN DI-COMMIT
+k8s/backend-secret.yaml
+

@@ -4,7 +4,7 @@ metadata:
   name: backend-config
   namespace: default
 data:
-  DB_HOST: "kalori-db-service"       # Sesuaikan jika pakai RDS
+  DB_HOST: "postgres"       # Sesuaikan jika pakai RDS
   DB_USER: "nops_admin"
   DB_NAME: "nops_db"
   AI_SERVICE_URL: "http://ai-service:5000/estimate-calorie"
