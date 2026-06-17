@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KaloriTrack — Pantau Nutrisi Harian Anda</title>
+  <meta name="description" content="Aplikasi pelacak kalori modern untuk memantau asupan nutrisi harian Anda dengan mudah dan cerdas." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ═══════════════ SIDEBAR ═══════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🔥</div>
+    <span class="logo-text">KaloriTrack</span>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="#" class="nav-item active" data-section="dashboard" id="nav-dashboard">
+      <span class="nav-icon">📊</span><span>Dashboard</span>
+    </a>
+    <a href="#" class="nav-item" data-section="log" id="nav-log">
+      <span class="nav-icon">➕</span><span>Catat Makanan</span>
+    </a>
+    <a href="#" class="nav-item" data-section="history" id="nav-history">
+      <span class="nav-icon">📋</span><span>Riwayat</span>
+    </a>
+    <a href="#" class="nav-item" data-section="stats" id="nav-stats">
+      <span class="nav-icon">📈</span><span>Statistik</span>
+    </a>
+    <a href="#" class="nav-item" data-section="goals" id="nav-goals">
+      <span class="nav-icon">🎯</span><span>Target</span>
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-date" id="sidebar-date"></div>
+  </div>
+</aside>
+
+<!-- ═══════════════ MAIN ═══════════════ -->
+<main class="main-content">
+  <!-- ── Top Bar ── -->
+  <header class="topbar">
+    <button class="menu-btn" id="menu-btn">☰</button>
+    <div class="topbar-title" id="topbar-title">Dashboard</div>
+    <div class="topbar-right">
+      <input type="date" id="date-picker" class="date-picker" />
+    </div>
+  </header>
+
+  <!-- ══ SECTION: Dashboard ══ -->
+  <section class="section active" id="section-dashboard">
+    <div class="page-header">
+      <h1>Selamat Datang! 👋</h1>
+      <p class="subtitle" id="greeting-sub">Mari pantau asupan nutrisimu hari ini.</p>
+    </div>
+
+    <!-- Calorie Ring + Macros -->
+    <div class="summary-grid">
+      <div class="card ring-card">
+        <div class="ring-wrapper">
+          <svg class="ring-svg" viewBox="0 0 160 160">
+            <circle class="ring-bg" cx="80" cy="80" r="65" />
+            <circle class="ring-progress" id="calorie-ring" cx="80" cy="80" r="65"
+              stroke-dasharray="408.41"
+              stroke-dashoffset="408.41" />
+          </svg>
+          <div class="ring-center">
+            <div class="ring-value" id="ring-consumed">0</div>
+            <div class="ring-label">kal dikonsumsi</div>
+          </div>
+        </div>
+        <div class="ring-info">
+          <div class="ring-stat">
+            <span class="ring-stat-val" id="ring-goal">2000</span>
+            <span class="ring-stat-lbl">Target</span>
+          </div>
+          <div class="ring-stat">
+            <span class="ring-stat-val" id="ring-remain">2000</span>
+            <span class="ring-stat-lbl">Sisa</span>
+          </div>
+          <div class="ring-stat">
+            <span class="ring-stat-val" id="ring-pct">0%</span>
+            <span class="ring-stat-lbl">Tercapai</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Macro Cards -->
+      <div class="macro-stack">
+        <div class="card macro-card macro-protein">
+          <div class="macro-icon">💪</div>
+          <div class="macro-info">
+            <div class="macro-name">Protein</div>
+            <div class="macro-values"><span id="protein-val">0</span>g / <span id="protein-goal">150</span>g</div>
+          </div>
+          <div class="macro-bar-wrap"><div class="macro-bar" id="protein-bar"></div></div>
+        </div>
+        <div class="card macro-card macro-carbs">
+          <div class="macro-icon">🌾</div>
+          <div class="macro-info">
+            <div class="macro-name">Karbohidrat</div>
+            <div class="macro-values"><span id="carbs-val">0</span>g / <span id="carbs-goal">250</span>g</div>
+          </div>
+          <div class="macro-bar-wrap"><div class="macro-bar" id="carbs-bar"></div></div>
+        </div>
+        <div class="card macro-card macro-fat">
+          <div class="macro-icon">🥑</div>
+          <div class="macro-info">
+            <div class="macro-name">Lemak</div>
+            <div class="macro-values"><span id="fat-val">0</span>g / <span id="fat-goal">65</span>g</div>
+          </div>
+          <div class="macro-bar-wrap"><div class="macro-bar" id="fat-bar"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Add + Today's meals -->
+    <div class="dashboard-bottom">
+      <div class="card today-meals-card">
+        <div class="card-header">
+          <h3>Makanan Hari Ini</h3>
+          <button class="btn-small" id="quick-add-btn">+ Tambah</button>
+        </div>
+        <div class="meal-list" id="dashboard-meal-list">
+          <div class="empty-state">Belum ada makanan yang dicatat hari ini.</div>
+        </div>
+      </div>
+
+      <div class="card quick-tips-card">
+        <h3>💡 Tips Nutrisi</h3>
+        <div class="tips-list" id="tips-list"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SECTION: Log Food ══ -->
+  <section class="section" id="section-log">
+    <div class="page-header">
+      <h1>Catat Makanan ➕</h1>
+      <p class="subtitle">Masukkan detail makanan yang kamu konsumsi.</p>
+    </div>
+
+    <!-- Quick picks -->
+    <div class="card quick-picks-card">
+      <h3>⚡ Makanan Populer</h3>
+      <div class="quick-picks-grid" id="quick-picks-grid"></div>
+    </div>
+
+    <!-- Manual form -->
+    <div class="card form-card">
+      <h3>📝 Input Manual</h3>
+      <form id="food-form" class="food-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="food-name">Nama Makanan *</label>
+            <input type="text" id="food-name" placeholder="cth: Nasi Goreng" required />
+          </div>
+          <div class="form-group">
+            <label for="food-calories">Kalori (kal) *</label>
+            <input type="number" id="food-calories" placeholder="cth: 350" min="1" required />
+          </div>
+        </div>
+        <div class="form-row form-row-4">
+          <div class="form-group">
+            <label for="food-protein">Protein (g)</label>
+            <input type="number" id="food-protein" placeholder="0" step="0.1" min="0" />
+          </div>
+          <div class="form-group">
+            <label for="food-carbs">Karbo (g)</label>
+            <input type="number" id="food-carbs" placeholder="0" step="0.1" min="0" />
+          </div>
+          <div class="form-group">
+            <label for="food-fat">Lemak (g)</label>
+            <input type="number" id="food-fat" placeholder="0" step="0.1" min="0" />
+          </div>
+          <div class="form-group">
+            <label for="food-meal">Waktu Makan</label>
+            <select id="food-meal">
+              <option value="breakfast">🌅 Sarapan</option>
+              <option value="lunch">☀️ Makan Siang</option>
+              <option value="dinner">🌙 Makan Malam</option>
+              <option value="snack" selected>🍎 Camilan</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary" id="submit-btn">
+          <span>Simpan Makanan</span>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ══ SECTION: History ══ -->
+  <section class="section" id="section-history">
+    <div class="page-header">
+      <h1>Riwayat Makanan 📋</h1>
+      <p class="subtitle">Semua makanan yang telah kamu catat.</p>
+    </div>
+    <div class="card">
+      <div class="history-filters">
+        <div class="filter-group">
+          <button class="filter-btn active" data-filter="all">Semua</button>
+          <button class="filter-btn" data-filter="breakfast">Sarapan</button>
+          <button class="filter-btn" data-filter="lunch">Siang</button>
+          <button class="filter-btn" data-filter="dinner">Malam</button>
+          <button class="filter-btn" data-filter="snack">Camilan</button>
+        </div>
+      </div>
+      <div id="history-list" class="history-list">
+        <div class="empty-state">Tidak ada data untuk tanggal ini.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SECTION: Stats ══ -->
+  <section class="section" id="section-stats">
+    <div class="page-header">
+      <h1>Statistik 7 Hari 📈</h1>
+      <p class="subtitle">Perkembangan kalori dan nutrisimu seminggu terakhir.</p>
+    </div>
+    <div class="stats-grid">
+      <div class="card chart-card">
+        <h3>Kalori per Hari</h3>
+        <div class="bar-chart" id="bar-chart"></div>
+      </div>
+      <div class="card chart-card macro-chart-card">
+        <h3>Rata-rata Makronutrien</h3>
+        <div class="donut-chart-wrap">
+          <svg class="donut-svg" viewBox="0 0 200 200" id="donut-svg">
+            <circle class="donut-seg donut-protein" cx="100" cy="100" r="70" id="donut-protein" />
+            <circle class="donut-seg donut-carbs"   cx="100" cy="100" r="70" id="donut-carbs" />
+            <circle class="donut-seg donut-fat"     cx="100" cy="100" r="70" id="donut-fat" />
+          </svg>
+          <div class="donut-legend" id="donut-legend"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card weekly-table-card">
+      <h3>Detail Mingguan</h3>
+      <div class="table-wrap">
+        <table class="data-table" id="weekly-table">
+          <thead>
+            <tr><th>Tanggal</th><th>Kalori</th><th>Protein</th><th>Karbo</th><th>Lemak</th></tr>
+          </thead>
+          <tbody id="weekly-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SECTION: Goals ══ -->
+  <section class="section" id="section-goals">
+    <div class="page-header">
+      <h1>Target Harian 🎯</h1>
+      <p class="subtitle">Sesuaikan target nutrisi harian kamu.</p>
+    </div>
+    <div class="card goals-form-card">
+      <form id="goals-form" class="goals-form">
+        <div class="goals-grid">
+          <div class="goal-item">
+            <div class="goal-icon goal-icon-cal">🔥</div>
+            <label for="goal-cal">Kalori Harian (kal)</label>
+            <input type="number" id="goal-cal" value="2000" min="500" max="10000" />
+            <div class="goal-hint">Rekomendasi: 1800–2500 kal/hari</div>
+          </div>
+          <div class="goal-item">
+            <div class="goal-icon goal-icon-pro">💪</div>
+            <label for="goal-protein">Target Protein (g)</label>
+            <input type="number" id="goal-protein" value="150" min="0" max="500" />
+            <div class="goal-hint">Rekomendasi: 0.8–2g per kg berat badan</div>
+          </div>
+          <div class="goal-item">
+            <div class="goal-icon goal-icon-carb">🌾</div>
+            <label for="goal-carbs">Target Karbohidrat (g)</label>
+            <input type="number" id="goal-carbs" value="250" min="0" max="1000" />
+            <div class="goal-hint">Rekomendasi: 45–65% dari total kalori</div>
+          </div>
+          <div class="goal-item">
+            <div class="goal-icon goal-icon-fat">🥑</div>
+            <label for="goal-fat">Target Lemak (g)</label>
+            <input type="number" id="goal-fat" value="65" min="0" max="300" />
+            <div class="goal-hint">Rekomendasi: 20–35% dari total kalori</div>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary">Simpan Target</button>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══════════════ TOAST ═══════════════ -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- ═══════════════ MODAL (Quick Add) ═══════════════ -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="quick-modal">
+    <div class="modal-header">
+      <h3>Tambah Makanan Cepat</h3>
+      <button class="modal-close" id="modal-close">✕</button>
+    </div>
+    <form id="quick-form" class="quick-form">
+      <input type="text" id="q-name" placeholder="Nama makanan *" required />
+      <input type="number" id="q-cal" placeholder="Kalori *" required min="1" />
+      <select id="q-meal">
+        <option value="breakfast">🌅 Sarapan</option>
+        <option value="lunch">☀️ Makan Siang</option>
+        <option value="dinner">🌙 Makan Malam</option>
+        <option value="snack" selected>🍎 Camilan</option>
+      </select>
+      <button type="submit" class="btn-primary">Tambah</button>
+    </form>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

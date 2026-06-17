@@ -1,0 +1,66 @@
+# docker-compose.prod.yaml
+# Digunakan oleh CI/CD di EC2 — pull image dari Docker Hub
+# Jangan jalankan ini secara lokal, gunakan docker-compose.yaml biasa
+
+services:
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: nops_admin
+      POSTGRES_PASSWORD: NopsPassword123!
+      POSTGRES_DB: nops_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - nops_pgdata:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nops_admin -d nops_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ai-service:
+    image: ${DOCKER_HUB_USERNAME}/uascloud-ai-service:latest
+    restart: always
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  backend:
+    image: ${DOCKER_HUB_USERNAME}/uascloud-backend:latest
+    restart: always
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=postgres
+      - DB_USER=nops_admin
+      - DB_PASSWORD=NopsPassword123!
+      - DB_NAME=nops_db
+      - AI_SERVICE_URL=http://ai-service:5000/estimate-calorie
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ai-service:
+        condition: service_started
+
+  frontend:
+    image: ${DOCKER_HUB_USERNAME}/uascloud-frontend:latest
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  nops_pgdata:

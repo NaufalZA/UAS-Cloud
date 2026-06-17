@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kalori-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kalori-db
+  template:
+    metadata:
+      labels:
+        app: kalori-db
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15
+        env:
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              name: kalori-config
+              key: DB_NAME
+        - name: POSTGRES_USER
+          valueFrom:
+            configMapKeyRef:
+              name: kalori-config
+              key: DB_USER
+        - name: POSTGRES_PASSWORD
+          value: "KaloriPass123!"
+        ports:
+        - containerPort: 5432

@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: nops_admin
+      POSTGRES_PASSWORD: NopsPassword123!
+      POSTGRES_DB: nops_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - nops_pgdata:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  ai-service:
+    build: ./ai-service
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=postgres
+      - DB_USER=nops_admin
+      - DB_PASSWORD=NopsPassword123!
+      - DB_NAME=nops_db
+      - AI_SERVICE_URL=http://ai-service:5000/estimate-calorie
+    depends_on:
+      - postgres
+      - ai-service
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  nops_pgdata:

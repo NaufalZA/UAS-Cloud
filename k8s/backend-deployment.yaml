@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uascloud-backend
+  namespace: default
+  labels:
+    app: uascloud-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: uascloud-backend
+  template:
+    metadata:
+      labels:
+        app: uascloud-backend
+    spec:
+      containers:
+      - name: backend
+        image: DOCKER_HUB_USERNAME/uascloud-backend:latest   # diganti CI/CD via kubectl set image
+        ports:
+        - containerPort: 8080
+        env:
+        # ── Non-sensitive dari ConfigMap ──────────────────
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: DB_HOST
+        - name: DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: DB_USER
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: DB_NAME
+        - name: AI_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: AI_SERVICE_URL
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: PORT
+        # ── Sensitive dari Secret ──────────────────────────
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: backend-secret
+              key: DB_PASSWORD
+        - name: R2_ACCOUNT_ID
+          valueFrom:
+            secretKeyRef:
+              name: backend-secret
+              key: R2_ACCOUNT_ID
+        - name: R2_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: backend-secret
+              key: R2_ACCESS_KEY
+        - name: R2_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: backend-secret
+              key: R2_SECRET_KEY
+        - name: R2_BUCKET_NAME
+          valueFrom:
+            secretKeyRef:
+              name: backend-secret
+              key: R2_BUCKET_NAME
+        - name: R2_PUBLIC_URL
+          valueFrom:
+            secretKeyRef:
+              name: backend-secret
+              key: R2_PUBLIC_URL
+        # ── Resource limits (sama seperti UTS 3) ──────────
+        resources:
+          requests:
+            cpu: 200m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        # ── Health check ──────────────────────────────────
+        readinessProbe:
+          httpGet:
+            path: /api/history
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /api/history
+            port: 8080
+          initialDelaySeconds: 20
+          periodSeconds: 15

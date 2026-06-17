@@ -1,0 +1,448 @@
+(base) PS D:\Nops\Documents\VsCode\AWS\UAS Cloud> gcloud auth login
+Your browser has been opened to visit:
+
+    https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=32555940559.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8085%2F&scope=openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fappengine.admin+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fsqlservice.login+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcompute+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Faccounts.reauth&state=MEelvGGvuAcunsXLdHtZolO9WuS3TK&access_type=offline&code_challenge=FXSgHYyvjyLHIOD-fG05yiaXNd82i4bgHSYJz4GRuN4&code_challenge_method=S256
+
+
+You are now logged in as [nzaidan0605@gmail.com].
+Your current project is [None].  You can change this setting by running:
+  $ gcloud config set project PROJECT_ID
+(base) PS D:\Nops\Documents\VsCode\AWS\UAS Cloud> gcloud config set project gen-lang-client-0764546016
+Updated property [core/project].
+(base) PS D:\Nops\Documents\VsCode\AWS\UAS Cloud> gcloud services enable compute.googleapis.com container.googleapis.com
+Operation "operations/acf.p2-131002321526-aa03a7ff-4d43-436a-a498-87ef68cd7ede" finished successfully.
+(base) PS D:\Nops\Documents\VsCode\AWS\UAS Cloud> gcloud compute networks create vpc-nops-frontend --subnet-mode=custom
+>>
+>> gcloud compute networks create vops-backend --subnet-mode=custom
+>>
+>> gcloud compute networks create vpc-nops-db --subnet-mode=custom
+>>
+>> gcloud compute networks create vpc-nops-ai --subnet-mode=custom
+>>
+>> gcloud compute networks subnets create subnet-frontend --network=vpc-nops-frontend --region=asia-southeast2 --range=10.0.1.0/24
+>>
+>> gcloud compute networks subnets create subnet-backend --network=vops-backend --region=asia-southeast2 --range=10.0.2.0/24
+>>
+>> gcloud compute networks subnets create subnet-db --network=vpc-nops-db --region=asia-southeast2 --range=10.0.3.0/24 
+>>
+>> gcloud compute networks subnets create subnet-ai --network=vpc-nops-ai --region=asia-southeast2 --range=10.0.4.0/24 
+Created [https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vpc-nops-frontend].
+NAME               SUBNET_MODE  BGP_ROUTING_MODE  IPV4_RANGE  GATEWAY_IPV4  INTERNAL_IPV6_RANGE
+vpc-nops-frontend  CUSTOM       REGIONAL
+
+Instances on this network will not be reachable until firewall rules
+are created. As an example, you can allow all internal traffic between
+instances as well as SSH, RDP, and ICMP by running:
+
+$ gcloud compute firewall-rules create <FIREWALL_NAME> --network vpc-nops-frontend --allow tcp,udp,icmp --source-ranges <IP_RANGE>
+$ gcloud compute firewall-rules create <FIREWALL_NAME> --network vpc-nops-frontend --allow tcp:22,tcp:3389,icmp        
+
+Created [https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vops-backend].
+NAME          SUBNET_MODE  BGP_ROUTING_MODE  IPV4_RANGE  GATEWAY_IPV4  INTERNAL_IPV6_RANGE
+vops-backend  CUSTOM       REGIONAL
+
+Instances on this network will not be reachable until firewall rules
+are created. As an example, you can allow all internal traffic between
+instances as well as SSH, RDP, and ICMP by running:
+
+$ gcloud compute firewall-rules create <FIREWALL_NAME> --network vops-backend --allow tcp,udp,icmp --source-ranges <IP_RANGE>
+$ gcloud compute firewall-rules create <FIREWALL_NAME> --network vops-backend --allow tcp:22,tcp:3389,icmp
+
+Created [https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vpc-nops-db].
+NAME         SUBNET_MODE  BGP_ROUTING_MODE  IPV4_RANGE  GATEWAY_IPV4  INTERNAL_IPV6_RANGE
+vpc-nops-db  CUSTOM       REGIONAL
+
+Instances on this network will not be reachable until firewall rules
+are created. As an example, you can allow all internal traffic between
+instances as well as SSH, RDP, and ICMP by running:
+
+$ gcloud compute firewall-rules create <FIREWALL_NAME> --network vpc-nops-db --allow tcp,udp,icmp --source-ranges <IP_RANGE>
+$ gcloud compute firewall-rules create <FIREWALL_NAME> --network vpc-nops-db --allow tcp:22,tcp:3389,icmp
+
+Created [https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vpc-nops-ai].
+NAME         SUBNET_MODE  BGP_ROUTING_MODE  IPV4_RANGE  GATEWAY_IPV4  INTERNAL_IPV6_RANGE
+vpc-nops-ai  CUSTOM       REGIONAL
+
+Instances on this network will not be reachable until firewall rules
+are created. As an example, you can allow all internal traffic between
+instances as well as SSH, RDP, and ICMP by running:
+
+$ gcloud compute firewall-rules create <FIREWALL_NAME> --network vpc-nops-ai --allow tcp,udp,icmp --source-ranges <IP_RANGE>
+$ gcloud compute firewall-rules create <FIREWALL_NAME> --network vpc-nops-ai --allow tcp:22,tcp:3389,icmp
+
+Created [https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/regions/asia-southeast2/subnetworks/subnet-frontend].
+NAME             REGION           NETWORK            RANGE        STACK_TYPE  IPV6_ACCESS_TYPE  INTERNAL_IPV6_PREFIX  EXTERNAL_IPV6_PREFIX
+subnet-frontend  asia-southeast2  vpc-nops-frontend  10.0.1.0/24  IPV4_ONLY
+Created [https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/regions/asia-southeast2/subnetworks/subnet-backend].
+NAME            REGION           NETWORK       RANGE        STACK_TYPE  IPV6_ACCESS_TYPE  INTERNAL_IPV6_PREFIX  EXTERNAL_IPV6_PREFIX
+subnet-backend  asia-southeast2  vops-backend  10.0.2.0/24  IPV4_ONLY
+Created [https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/regions/asia-southeast2/subnetworks/subnet-db].
+NAME       REGION           NETWORK      RANGE        STACK_TYPE  IPV6_ACCESS_TYPE  INTERNAL_IPV6_PREFIX  EXTERNAL_IPV6_PREFIX
+subnet-db  asia-southeast2  vpc-nops-db  10.0.3.0/24  IPV4_ONLY
+Created [https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/regions/asia-southeast2/subnetworks/subnet-ai].
+NAME       REGION           NETWORK      RANGE        STACK_TYPE  IPV6_ACCESS_TYPE  INTERNAL_IPV6_PREFIX  EXTERNAL_IPV6_PREFIX
+subnet-ai  asia-southeast2  vpc-nops-ai  10.0.4.0/24  IPV4_ONLY
+(base) PS D:\Nops\Documents\VsCode\AWS\UAS Cloud> gcloud compute networks peerings create peer-fe-to-be --network=vpc-nops-frontend --peer-network=vops-backend
+>>
+>> gcloud compute networks peerings create peer-be-to-fe --network=vops-backend --peer-network=vpc-nops-frontend       
+>>
+>> gcloud compute networks peerings create peer-be-to-db --network=vops-backend --peer-network=vpc-nops-db
+>>
+>> gcloud compute networks peerings create peer-db-to-be --network=vpc-nops-db --peer-network=vops-backend
+>>
+>> gcloud compute networks peerings create peer-be-to-ai --network=vops-backend --peer-network=vpc-nops-ai
+>>
+>> gcloud compute networks peerings create peer-ai-to-be --network=vpc-nops-ai --peer-network=vops-backend
+Updated [https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vpc-nops-frontend].
+---
+autoCreateSubnetworks: false
+creationTimestamp: '2026-06-16T16:31:52.030-07:00'
+id: '7519107056664338952'
+kind: compute#network
+name: vpc-nops-frontend
+networkFirewallPolicyEnforcementOrder: AFTER_CLASSIC_FIREWALL
+peerings:
+- autoCreateRoutes: true
+  exchangeSubnetRoutes: true
+  exportCustomRoutes: false
+  exportSubnetRoutesWithPublicIp: true
+  importCustomRoutes: false
+  importSubnetRoutesWithPublicIp: false
+  name: peer-fe-to-be
+  network: https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vops-backend      
+  stackType: IPV4_ONLY
+  state: INACTIVE
+  stateDetails: '[2026-06-16T16:34:39.554-07:00]: Waiting for peer network to connect.'
+  updateStrategy: INDEPENDENT
+routingConfig:
+  bgpBestPathSelectionMode: LEGACY
+  routingMode: REGIONAL
+selfLink: https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vpc-nops-frontend  
+selfLinkWithId: https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/7519107056664338952
+subnetworks:
+- https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/regions/asia-southeast2/subnetworks/subnet-frontend
+Updated [https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vops-backend].
+---
+autoCreateSubnetworks: false
+creationTimestamp: '2026-06-16T16:32:07.244-07:00'
+id: '1902297505838424600'
+kind: compute#network
+name: vops-backend
+networkFirewallPolicyEnforcementOrder: AFTER_CLASSIC_FIREWALL
+peerings:
+- autoCreateRoutes: true
+  connectionStatus:
+    trafficConfiguration:
+      exportCustomRoutesToPeer: false
+      exportSubnetRoutesWithPublicIpToPeer: false
+      importCustomRoutesFromPeer: false
+      importSubnetRoutesWithPublicIpFromPeer: false
+      stackType: IPV4_ONLY
+    updateStrategy: INDEPENDENT
+  exchangeSubnetRoutes: true
+  exportCustomRoutes: false
+  exportSubnetRoutesWithPublicIp: true
+  importCustomRoutes: false
+  importSubnetRoutesWithPublicIp: false
+  name: peer-be-to-fe
+  network: https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vpc-nops-frontend 
+  stackType: IPV4_ONLY
+  state: ACTIVE
+  stateDetails: '[2026-06-16T16:34:46.943-07:00]: Connected.'
+  updateStrategy: INDEPENDENT
+routingConfig:
+  bgpBestPathSelectionMode: LEGACY
+  routingMode: REGIONAL
+selfLink: https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vops-backend       
+selfLinkWithId: https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/1902297505838424600
+subnetworks:
+- https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/regions/asia-southeast2/subnetworks/subnet-backend
+Updated [https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vops-backend].
+---
+autoCreateSubnetworks: false
+creationTimestamp: '2026-06-16T16:32:07.244-07:00'
+id: '1902297505838424600'
+kind: compute#network
+name: vops-backend
+networkFirewallPolicyEnforcementOrder: AFTER_CLASSIC_FIREWALL
+peerings:
+- autoCreateRoutes: true
+  exchangeSubnetRoutes: true
+  exportCustomRoutes: false
+  exportSubnetRoutesWithPublicIp: true
+  importCustomRoutes: false
+  importSubnetRoutesWithPublicIp: false
+  name: peer-be-to-db
+  network: https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vpc-nops-db       
+  stackType: IPV4_ONLY
+  state: INACTIVE
+  stateDetails: '[2026-06-16T16:35:01.395-07:00]: Waiting for peer network to connect.'
+  updateStrategy: INDEPENDENT
+- autoCreateRoutes: true
+  connectionStatus:
+    trafficConfiguration:
+      exportCustomRoutesToPeer: false
+      exportSubnetRoutesWithPublicIpToPeer: false
+      importCustomRoutesFromPeer: false
+      importSubnetRoutesWithPublicIpFromPeer: false
+      stackType: IPV4_ONLY
+    updateStrategy: INDEPENDENT
+  exchangeSubnetRoutes: true
+  exportCustomRoutes: false
+  exportSubnetRoutesWithPublicIp: true
+  importCustomRoutes: false
+  importSubnetRoutesWithPublicIp: false
+  name: peer-be-to-fe
+  network: https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vpc-nops-frontend 
+  stackType: IPV4_ONLY
+  state: ACTIVE
+  stateDetails: '[2026-06-16T16:34:46.943-07:00]: Connected.'
+  updateStrategy: INDEPENDENT
+routingConfig:
+  bgpBestPathSelectionMode: LEGACY
+  routingMode: REGIONAL
+selfLink: https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vops-backend       
+selfLinkWithId: https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/1902297505838424600
+subnetworks:
+- https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/regions/asia-southeast2/subnetworks/subnet-backend
+Updated [https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vpc-nops-db].
+---
+autoCreateSubnetworks: false
+creationTimestamp: '2026-06-16T16:32:24.469-07:00'
+id: '6255422408532714471'
+kind: compute#network
+name: vpc-nops-db
+networkFirewallPolicyEnforcementOrder: AFTER_CLASSIC_FIREWALL
+peerings:
+- autoCreateRoutes: true
+  connectionStatus:
+    trafficConfiguration:
+      exportCustomRoutesToPeer: false
+      exportSubnetRoutesWithPublicIpToPeer: false
+      importCustomRoutesFromPeer: false
+      importSubnetRoutesWithPublicIpFromPeer: false
+      stackType: IPV4_ONLY
+    updateStrategy: INDEPENDENT
+  exchangeSubnetRoutes: true
+  exportCustomRoutes: false
+  exportSubnetRoutesWithPublicIp: true
+  importCustomRoutes: false
+  importSubnetRoutesWithPublicIp: false
+  name: peer-db-to-be
+  network: https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vops-backend      
+  stackType: IPV4_ONLY
+  state: ACTIVE
+  stateDetails: '[2026-06-16T16:35:07.426-07:00]: Connected.'
+  updateStrategy: INDEPENDENT
+routingConfig:
+  bgpBestPathSelectionMode: LEGACY
+  routingMode: REGIONAL
+selfLink: https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vpc-nops-db        
+selfLinkWithId: https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/6255422408532714471
+subnetworks:
+- https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/regions/asia-southeast2/subnetworks/subnet-db
+Updated [https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vops-backend].
+---
+autoCreateSubnetworks: false
+creationTimestamp: '2026-06-16T16:32:07.244-07:00'
+id: '1902297505838424600'
+kind: compute#network
+name: vops-backend
+networkFirewallPolicyEnforcementOrder: AFTER_CLASSIC_FIREWALL
+peerings:
+- autoCreateRoutes: true
+  exchangeSubnetRoutes: true
+  exportCustomRoutes: false
+  exportSubnetRoutesWithPublicIp: true
+  importCustomRoutes: false
+  importSubnetRoutesWithPublicIp: false
+  name: peer-be-to-ai
+  network: https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vpc-nops-ai       
+  stackType: IPV4_ONLY
+  state: INACTIVE
+  stateDetails: '[2026-06-16T16:35:19.476-07:00]: Waiting for peer network to connect.'
+  updateStrategy: INDEPENDENT
+- autoCreateRoutes: true
+  connectionStatus:
+    trafficConfiguration:
+      exportCustomRoutesToPeer: false
+      exportSubnetRoutesWithPublicIpToPeer: false
+      importCustomRoutesFromPeer: false
+      importSubnetRoutesWithPublicIpFromPeer: false
+      stackType: IPV4_ONLY
+    updateStrategy: INDEPENDENT
+  exchangeSubnetRoutes: true
+  exportCustomRoutes: false
+  exportSubnetRoutesWithPublicIp: true
+  importCustomRoutes: false
+  importSubnetRoutesWithPublicIp: false
+  name: peer-be-to-db
+  network: https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vpc-nops-db       
+  stackType: IPV4_ONLY
+  state: ACTIVE
+  stateDetails: '[2026-06-16T16:35:07.426-07:00]: Connected.'
+  updateStrategy: INDEPENDENT
+- autoCreateRoutes: true
+  connectionStatus:
+    trafficConfiguration:
+      exportCustomRoutesToPeer: false
+      exportSubnetRoutesWithPublicIpToPeer: false
+      importCustomRoutesFromPeer: false
+      importSubnetRoutesWithPublicIpFromPeer: false
+      stackType: IPV4_ONLY
+    updateStrategy: INDEPENDENT
+  exchangeSubnetRoutes: true
+  exportCustomRoutes: false
+  exportSubnetRoutesWithPublicIp: true
+  importCustomRoutes: false
+  importSubnetRoutesWithPublicIp: false
+  name: peer-be-to-fe
+  network: https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vpc-nops-frontend 
+  stackType: IPV4_ONLY
+  state: ACTIVE
+  stateDetails: '[2026-06-16T16:34:46.943-07:00]: Connected.'
+  updateStrategy: INDEPENDENT
+routingConfig:
+  bgpBestPathSelectionMode: LEGACY
+  routingMode: REGIONAL
+selfLink: https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vops-backend       
+selfLinkWithId: https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/1902297505838424600
+subnetworks:
+- https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/regions/asia-southeast2/subnetworks/subnet-backend
+Updated [https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vpc-nops-ai].
+---
+autoCreateSubnetworks: false
+creationTimestamp: '2026-06-16T16:32:40.088-07:00'
+id: '8748326456261370871'
+kind: compute#network
+name: vpc-nops-ai
+networkFirewallPolicyEnforcementOrder: AFTER_CLASSIC_FIREWALL
+peerings:
+- autoCreateRoutes: true
+  connectionStatus:
+    trafficConfiguration:
+      exportCustomRoutesToPeer: false
+      exportSubnetRoutesWithPublicIpToPeer: false
+      importCustomRoutesFromPeer: false
+      importSubnetRoutesWithPublicIpFromPeer: false
+      stackType: IPV4_ONLY
+    updateStrategy: INDEPENDENT
+  exchangeSubnetRoutes: true
+  exportCustomRoutes: false
+  exportSubnetRoutesWithPublicIp: true
+  importCustomRoutes: false
+  importSubnetRoutesWithPublicIp: false
+  name: peer-ai-to-be
+  network: https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vops-backend      
+  stackType: IPV4_ONLY
+  state: ACTIVE
+  stateDetails: '[2026-06-16T16:35:24.824-07:00]: Connected.'
+  updateStrategy: INDEPENDENT
+routingConfig:
+  bgpBestPathSelectionMode: LEGACY
+  routingMode: REGIONAL
+selfLink: https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/vpc-nops-ai        
+selfLinkWithId: https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/networks/8748326456261370871
+subnetworks:
+- https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/regions/asia-southeast2/subnetworks/subnet-ai
+(base) PS D:\Nops\Documents\VsCode\AWS\UAS Cloud> gcloud compute firewall-rules create allow-http-fe --network=vpc-nops-frontend --allow=tcp:80,tcp:443 --source-ranges=0.0.0.0/0
+>>
+>> gcloud compute firewall-rules create allow-be-from-fe --network=vops-backend --allow=tcp:80,tcp:8080 --source-ranges=10.0.1.0/24
+>>
+>> gcloud compute firewall-rules create allow-db-from-be --network=vpc-nops-db --allow=tcp:5432 --source-ranges=10.0.2.0/24
+>>
+>> gcloud compute firewall-rules create allow-ai-from-be --network=vpc-nops-ai --allow=tcp:5000 --source-ranges=10.0.2.0/24
+>>
+>> gcloud compute firewall-rules create allow-ssh-all-fe --network=vpc-nops-frontend --allow=tcp:22 --source-ranges=0.0.0.0/0
+>>
+>> gcloud compute firewall-rules create allow-ssh-all-db --network=vpc-nops-db --allow=tcp:22 --source-ranges=0.0.0.0/0
+>>
+>> gcloud compute firewall-rules create allow-ssh-all-ai --network=vpc-nops-ai --allow=tcp:22 --source-ranges=0.0.0.0/0
+
+ERROR: (gcloud.compute.firewall-rules.create) Firewall rules must be of the form PROTOCOL[:PORT[-PORT]]; received [tcp:80 tcp:443].
+ERROR: (gcloud.compute.firewall-rules.create) Firewall rules must be of the form PROTOCOL[:PORT[-PORT]]; received [tcp:80 tcp:8080].
+Creating firewall...-Created [https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/firewalls/allow-db-from-be].
+Creating firewall...done.
+NAME              NETWORK      DIRECTION  PRIORITY  ALLOW     DENY  DISABLED
+allow-db-from-be  vpc-nops-db  INGRESS    1000      tcp:5432        False
+Creating firewall...-Created [https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/firewalls/allow-ai-from-be].
+Creating firewall...done.
+NAME              NETWORK      DIRECTION  PRIORITY  ALLOW     DENY  DISABLED
+allow-ai-from-be  vpc-nops-ai  INGRESS    1000      tcp:5000        False
+Creating firewall...-Created [https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/firewalls/allow-ssh-all-fe].
+Creating firewall...done.
+NAME              NETWORK            DIRECTION  PRIORITY  ALLOW   DENY  DISABLED
+allow-ssh-all-fe  vpc-nops-frontend  INGRESS    1000      tcp:22        False
+Creating firewall...-Created [https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/firewalls/allow-ssh-all-db].
+Creating firewall...done.
+NAME              NETWORK      DIRECTION  PRIORITY  ALLOW   DENY  DISABLED
+allow-ssh-all-db  vpc-nops-db  INGRESS    1000      tcp:22        False
+Creating firewall...-Created [https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/firewalls/allow-ssh-all-ai].
+Creating firewall...done.
+NAME              NETWORK      DIRECTION  PRIORITY  ALLOW   DENY  DISABLED
+allow-ssh-all-ai  vpc-nops-ai  INGRESS    1000      tcp:22        False
+(base) PS D:\Nops\Documents\VsCode\AWS\UAS Cloud> gcloud compute firewall-rules create allow-http-fe --network=vpc-nops-frontend --allow="tcp:80,tcp:443" --source-ranges=0.0.0.0/0
+>>
+>> gcloud compute firewall-rules create allow-be-from-fe --network=vops-backend --allow="tcp:80,tcp:8080" --source-ranges=10.0.1.0/24
+Creating firewall...-Created [https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/firewalls/allow-http-fe].
+Creating firewall...done.
+NAME           NETWORK            DIRECTION  PRIORITY  ALLOW           DENY  DISABLED
+allow-http-fe  vpc-nops-frontend  INGRESS    1000      tcp:80,tcp:443        False
+Creating firewall...-Created [https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/global/firewalls/allow-be-from-fe].
+Creating firewall...done.
+NAME              NETWORK       DIRECTION  PRIORITY  ALLOW            DENY  DISABLED
+allow-be-from-fe  vops-backend  INGRESS    1000      tcp:80,tcp:8080        False
+(base) PS D:\Nops\Documents\VsCode\AWS\UAS Cloud> gcloud container clusters create nops-backend-cluster --region=asia-southeast2 --node-locations=asia-southeast2-a --num-nodes=1 --machine-type=e2-medium --network=vops-backend --subnet=subnet-backend
+et=subnet-backend (did you mean '--subnetwork'?)
+
+To search the help text of gcloud commands, run:
+  gcloud help -- SEARCH_TERMS
+(base) PS D:\Nops\Documents\VsCode\AWS\UAS Cloud> gcloud container clusters create nops-backend-cluster --region=asia-southeast2 --node-locations=asia-southeast2-a --num-nodes=1 --machine-type=e2-medium --network=vops-backend --subnetwork=subnet-backend
+Note: Your Pod address range (`--cluster-ipv4-cidr`) can accommodate at most 1008 node(s).
+Creating cluster nops-backend-cluster in asia-southeast2... Cluster is b                                                                        
+Creating cluster nops-backend-cluster in asia-southeast2... Cluster is b                                                                        Creating cluster nops-backend-cluster in asia-southeast2... Cluster is b                                                                        Creating cluster nops-backend-cluster in asia-southeast2... Cluster is b                                                                        Creating cluster nops-backend-cluster in asia-southeast2... Cluster is b                                                                        Creating cluster nops-backend-cluster in asia-southeast2... Cluster is b                                                                  Creating cluster nops-backend-cluster in asia-southeast2... Cluster is being health-checked (Kubernetes Control Plane 
+is healthy)...done.
+Created [https://container.googleapis.com/v1/projects/gen-lang-client-0764546016/zones/asia-southeast2/clusters/nops-backend-cluster].
+To inspect the contents of your cluster, go to: https://console.cloud.google.com/kubernetes/workload_/gcloud/asia-southeast2/nops-backend-cluster?project=gen-lang-client-0764546016
+CRITICAL: ACTION REQUIRED: gke-gcloud-auth-plugin, which is needed for continued use of kubectl, was not found or is not executable. Install gke-gcloud-auth-plugin for use with kubectl by following https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl#install_plugin
+kubeconfig entry generated for nops-backend-cluster.
+NAME                  LOCATION         MASTER_VERSION      MASTER_IP      MACHINE_TYPE  NODE_VERSION        NUM_NODES  STATUS   STACK_TYPE
+nops-backend-cluster  asia-southeast2  1.35.5-gke.1000000  34.101.195.12  e2-medium     1.35.5-gke.1000000  1          
+RUNNING  IPV4
+(base) PS D:\Nops\Documents\VsCode\AWS\UAS Cloud> gke-gcloud-auth-plugin --version
+gke-gcloud-auth-plugin: The term 'gke-gcloud-auth-plugin' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+(base) PS D:\Nops\Documents\VsCode\AWS\UAS Cloud> gcloud components install gke-gcloud-auth-plugin
+
+Restarting command:
+  $ gcloud components install gke-gcloud-auth-plugin
+
+(base) PS D:\Nops\Documents\VsCode\AWS\UAS Cloud> gke-gcloud-auth-plugin --version
+Kubernetes v0.1.0-gke.3-6-g26cf93a24
+(base) PS D:\Nops\Documents\VsCode\AWS\UAS Cloud> gcloud container clusters get-credentials nops-backend-cluster --location=asia-southeast2
+Fetching cluster endpoint and auth data.
+kubeconfig entry generated for nops-backend-cluster.
+(base) PS D:\Nops\Documents\VsCode\AWS\UAS Cloud> kubectl get namespaces
+NAME                                STATUS   AGE
+default                             Active   8m47s
+gke-managed-cim                     Active   7m11s
+gke-managed-networking-dra-driver   Active   6m12s
+gke-managed-system                  Active   6m52s
+gke-managed-volumepopulator         Active   6m47s
+gmp-public                          Active   6m28s
+gmp-system                          Active   6m28s
+kube-node-lease                     Active   8m47s
+kube-public                         Active   8m47s
+kube-system                         Active   8m47s
+(base) PS D:\Nops\Documents\VsCode\AWS\UAS Cloud> gcloud compute instances create vm-nops-frontend --zone=asia-southeast2-a --machine-type=e2-micro --network=vpc-nops-frontend --subnet=subnet-frontend --image-family=ubuntu-2204-lts --image-project=ubuntu-os-cloud
+Created [https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/zones/asia-southeast2-a/instances/vm-nops-frontend].
+NAME              ZONE               MACHINE_TYPE  PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP    STATUS
+vm-nops-frontend  asia-southeast2-a  e2-micro                   10.0.1.2     34.128.120.36  RUNNING
+(base) PS D:\Nops\Documents\VsCode\AWS\UAS Cloud> gcloud compute instances create vm-nops-db --zone=asia-southeast2-a --machine-type=e2-micro --network=vpc-nops-db --subnet=subnet-db --image-family=ubuntu-2204-lts --image-project=ubuntu-os-cloud
+Created [https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/zones/asia-southeast2-a/instances/vm-nops-db].
+NAME        ZONE               MACHINE_TYPE  PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP    STATUS
+vm-nops-db  asia-southeast2-a  e2-micro                   10.0.3.2     34.128.93.227  RUNNING
+(base) PS D:\Nops\Documents\VsCode\AWS\UAS Cloud> gcloud compute instances create vm-nops-ai --zone=asia-southeast2-a --machine-type=e2-micro --network=vpc-nops-ai --subnet=subnet-ai --image-family=ubuntu-2204-lts --image-project=ubuntu-os-cloud
+Created [https://www.googleapis.com/compute/v1/projects/gen-lang-client-0764546016/zones/asia-southeast2-a/instances/vm-nops-ai].
+NAME        ZONE               MACHINE_TYPE  PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP    STATUS
+vm-nops-ai  asia-southeast2-a  e2-micro                   10.0.4.2     34.50.110.108  RUNNING

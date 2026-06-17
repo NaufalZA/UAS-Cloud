@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kalori-db-service
+spec:
+  selector:
+    app: kalori-db
+  ports:
+  - port: 5432
+    targetPort: 5432

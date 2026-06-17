@@ -1,0 +1,18 @@
+# Secrets — JANGAN PERNAH DI-COMMIT
+.env
+*.env
+
+# Node
+**/node_modules/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker override lokal (prod file tetap di-track)
+docker-compose.override.yaml

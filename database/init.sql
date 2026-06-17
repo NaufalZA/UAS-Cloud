@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS meal_logs (
+    id SERIAL PRIMARY KEY,
+    food_name VARCHAR(255) NOT NULL,
+    calories INTEGER NOT NULL,
+    image_url TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

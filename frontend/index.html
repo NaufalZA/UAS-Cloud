@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NopsTrack — Pemindai Kalori Cerdas</title>
+  <meta name="description" content="Aplikasi pelacak kalori cerdas berbasis AI. Foto makananmu, dapatkan estimasi kalori secara otomatis." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ═══════════════ SIDEBAR ═══════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🔥</div>
+    <span class="logo-text">CalorieTracker</span>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="#" class="nav-item active" data-section="scanner" id="nav-scanner">
+      <span class="nav-icon">📷</span><span>Pindai Makanan</span>
+    </a>
+    <a href="#" class="nav-item" data-section="history" id="nav-history">
+      <span class="nav-icon">📋</span><span>Riwayat</span>
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-date" id="sidebar-date"></div>
+    <div class="sidebar-badge">SDG 3 — Good Health</div>
+  </div>
+</aside>
+
+<!-- ═══════════════ MAIN ═══════════════ -->
+<main class="main-content">
+  <!-- ── Top Bar ── -->
+  <header class="topbar">
+    <button class="menu-btn" id="menu-btn">☰</button>
+    <div class="topbar-title" id="topbar-title">Pindai Makanan</div>
+    <div class="topbar-right">
+      <div class="topbar-badge">🤖 AI Powered</div>
+    </div>
+  </header>
+
+  <!-- ══ SECTION: Scanner ══ -->
+  <section class="section active" id="section-scanner">
+    <div class="page-header">
+      <h1>Pindai Kalori 📷</h1>
+      <p class="subtitle">Foto makananmu dan biarkan AI mengestimasi kalorinya secara otomatis.</p>
+    </div>
+
+    <div class="scanner-grid">
+      <!-- Upload Card -->
+      <div class="card upload-card">
+        <h3>📁 Upload Foto Makanan</h3>
+        <div class="drop-zone" id="drop-zone">
+          <div class="drop-icon">🍽️</div>
+          <p class="drop-text">Drag & drop foto makanan di sini</p>
+          <p class="drop-sub">atau klik untuk memilih file</p>
+          <input type="file" id="foodImage" accept="image/*" hidden />
+        </div>
+        <div class="preview-wrap" id="preview-wrap" style="display:none;">
+          <img id="preview-img" src="" alt="Preview" />
+          <button class="btn-ghost" id="reset-btn">✕ Ganti Foto</button>
+        </div>
+        <button class="btn-primary" id="uploadBtn" disabled>
+          <span class="btn-icon">✨</span>
+          <span id="btn-text">Pilih foto dulu</span>
+        </button>
+      </div>
+
+      <!-- Result Card -->
+      <div class="card result-card" id="resultBox">
+        <h3>🔬 Hasil Analisis AI</h3>
+        <div class="result-empty" id="result-empty">
+          <div class="empty-icon">🤖</div>
+          <p>Hasil analisis akan muncul di sini</p>
+          <p class="empty-sub">Upload dan pindai foto makananmu terlebih dahulu</p>
+        </div>
+        <div class="result-content" id="result-content" style="display:none;">
+          <div class="result-food-img-wrap">
+            <img id="resImg" src="" alt="Makanan" />
+          </div>
+          <div class="result-info">
+            <div class="result-name" id="resName"></div>
+            <div class="result-cal-wrap">
+              <div class="result-cal-num" id="resCal"></div>
+              <div class="result-cal-lbl">kcal</div>
+            </div>
+            <div class="result-meta">Estimasi oleh Gemini AI</div>
+          </div>
+        </div>
+        <!-- Loading state -->
+        <div class="result-loading" id="result-loading" style="display:none;">
+          <div class="spinner"></div>
+          <p>Memproses dengan AI...</p>
+          <p class="loading-sub">Menganalisis gambar makanan, tunggu sebentar...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- How it works -->
+    <div class="card how-card">
+      <h3>⚡ Cara Kerja</h3>
+      <div class="steps-grid">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-icon">📷</div>
+          <div class="step-text">Foto makanan diupload ke Cloudflare R2</div>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-icon">🤖</div>
+          <div class="step-text">AI Service menganalisis gambar dengan Gemini</div>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-icon">💾</div>
+          <div class="step-text">Hasil disimpan ke PostgreSQL database</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SECTION: History ══ -->
+  <section class="section" id="section-history">
+    <div class="page-header">
+      <h1>Riwayat Makanan 📋</h1>
+      <p class="subtitle">Semua makanan yang telah dipindai dan dianalisis AI.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h3>Log Makanan</h3>
+        <button class="btn-small" id="refresh-btn">🔄 Refresh</button>
+      </div>
+      <div id="history-list" class="history-list">
+        <div class="empty-state">Memuat data...</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══════════════ TOAST ═══════════════ -->
+<div class="toast-container" id="toast-container"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

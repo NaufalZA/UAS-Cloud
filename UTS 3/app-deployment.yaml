@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kalori-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kalori-backend
+  template:
+    metadata:
+      labels:
+        app: kalori-backend
+    spec:
+      containers:
+      - name: kalori-app
+        image: nzaidan/kalori-tracker:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: kalori-config
+              key: DB_HOST
+        - name: DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: kalori-config
+              key: DB_USER
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: kalori-config
+              key: DB_NAME
+        - name: DB_PASSWORD
+          value: "KaloriPass123!"
+        - name: PORT
+          value: "80"
+        resources:
+          requests:
+            cpu: 200m
+          limits:
+            cpu: 500m

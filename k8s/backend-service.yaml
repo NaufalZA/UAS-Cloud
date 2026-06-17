@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: uascloud-backend-service
+  namespace: default
+spec:
+  type: LoadBalancer
+  selector:
+    app: uascloud-backend
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
